@@ -8,6 +8,7 @@ DARK_SQUARE = '#2d0547'
 SQUARE_SIZE = 80
 WHITE = 'white'
 BLACK = 'black'
+ALL = 'all'
 
 PATH = os.path.dirname(os.path.realpath(__file__))
 IMAGES = {}
@@ -32,6 +33,10 @@ class Board(Toplevel):
         self.board = {}
         self.move = 0
         self.history = {}
+        self.pieces = {}
+        self.pieces[WHITE] = set()
+        self.pieces[BLACK] = set()
+        self.pieces[ALL] = set()
 
         load_images()
 
@@ -41,9 +46,8 @@ class Board(Toplevel):
                     self.board[(j, i)] = ChessTile(self, LIGHT_SQUARE, (j, i))
                 else:
                     self.board[(j, i)] = ChessTile(self, DARK_SQUARE, (j, i))
-                    
+
         self.set_up_pieces()
-                    
 
     def set_up_pieces(self):
         for i in range(8):
@@ -96,6 +100,8 @@ class ChessTile(Button):
         image = IMAGES[piece.color + '/' + piece.name]
         self.config(image=image)
         self.piece = piece
+        self.master[ALL].add(piece.position)
+        self.master[piece.color].add(piece.position)
 
     def has_piece(self):
         return self.piece != None
