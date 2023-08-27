@@ -1,4 +1,3 @@
-from pieces import *
 from board import *
 from tkinter import *
 import os
