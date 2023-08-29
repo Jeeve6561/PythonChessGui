@@ -22,9 +22,6 @@ class Piece:
     def __repr__(self):
         return self.name.capitalize() + '(' + self.color + ', ' + self.file + str(self.rank) + ', ' + str(self.moved) + ')'
 
-    def get_attacking_squares(self):
-        return []
-
     def get_possible_moves(self):
         return []
 
@@ -33,6 +30,8 @@ class Pawn(Piece):
 
     def __init__(self, color, pos, board):
         super().__init__('pawn', color, pos, board)
+        self.en_passant_left = False
+        self.en_passant_right = False
 
     def get_attacking_squares(self):
         attacking_squares = []
@@ -43,26 +42,35 @@ class Pawn(Piece):
         elif self.color == BLACK:
             left = (self.position[0] - 1, self.position[1] + 1)
             right = (self.position[0] + 1, self.position[1] + 1)
-            
+
         if self.board.is_on_board(left):
             attacking_squares.append(left)
-            
+
         if self.board.is_on_board(right):
             attacking_squares.append(right)
 
         return attacking_squares
 
     def get_possible_moves(self):
-        return []
+        moves = []
+
+        if self.color == WHITE:
+            moves.append((self.position[0], self.position[1] - 1))
+            if not self.moved:
+                moves.append((self.position[0], self.position[1] - 2))
+
+        elif self.color == BLACK:
+            moves.append((self.position[0], self.position[1] + 1))
+            if not self.moved:
+                moves.append((self.position[0], self.position[1] + 2))
+
+        return moves
 
 
 class Rook(Piece):
 
     def __init__(self, color, pos, board):
         super().__init__('rook', color, pos, board)
-
-    def get_attacking_squares(self):
-        return []
 
     def get_possible_moves(self):
         return []
@@ -73,9 +81,6 @@ class Bishop(Piece):
     def __init__(self, color, pos, board):
         super().__init__('bishop', color, pos, board)
 
-    def get_attacking_squares(self):
-        return []
-
     def get_possible_moves(self):
         return []
 
@@ -84,9 +89,6 @@ class Knight(Piece):
 
     def __init__(self, color, pos, board):
         super().__init__('knight', color, pos, board)
-
-    def get_attacking_squares(self):
-        return []
 
     def get_possible_moves(self):
         return []
@@ -97,9 +99,6 @@ class Queen(Piece):
     def __init__(self, color, pos, board):
         super().__init__('queen', color, pos, board)
 
-    def get_attacking_squares(self):
-        return []
-
     def get_possible_moves(self):
         return []
 
@@ -108,9 +107,6 @@ class King(Piece):
 
     def __init__(self, color, pos, board):
         super().__init__('king', color, pos, board)
-
-    def get_attacking_squares(self):
-        return []
 
     def get_possible_moves(self):
         return []
