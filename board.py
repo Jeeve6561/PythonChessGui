@@ -8,7 +8,7 @@ DARK_SQUARE = '#2d0547'
 SQUARE_SIZE = 80
 WHITE = 'white'
 BLACK = 'black'
-ALL = 'all'
+ALL = 'all_pieces'
 
 PATH = os.path.dirname(os.path.realpath(__file__))
 IMAGES = {}
@@ -100,8 +100,8 @@ class ChessTile(Button):
         image = IMAGES[piece.color + '/' + piece.name]
         self.config(image=image)
         self.piece = piece
-        self.master[ALL].add(piece.position)
-        self.master[piece.color].add(piece.position)
+        self.master.pieces[ALL].add(piece.position)
+        self.master.pieces[piece.color].add(piece.position)
 
     def has_piece(self):
         return self.piece != None
